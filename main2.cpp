@@ -54,6 +54,8 @@ void getGrid(string rows[ROWS])
                     else
                         cout << (char) toupper(letter) << " ";
 
+                    rows[i] += letter;
+
                     j++;
                     break;
 
@@ -65,6 +67,7 @@ void getGrid(string rows[ROWS])
                         {
                             cout << "\b\b" << "\033[K";
                             j--;
+                            rows[i].replace(j, 1, "");
                             continue;
                         }
                         else if (i != 0 and j == 0)
@@ -72,12 +75,14 @@ void getGrid(string rows[ROWS])
                             cout << "\033[u" << "\b" << "\033[K";
                             i--;
                             j = COLUMNS - 1;
+                            rows[i].replace(j, 1, "");
                             continue;
                         }
                         else
                         {
                             cout << "\b\b" << "\033[K";
                             j--;
+                            rows[i].replace(j, 1, "");
                             continue;
                         }
                     }
@@ -97,7 +102,9 @@ void getGrid(string rows[ROWS])
 
 int main()
 {
-    getGrid(nullptr);
+    getGrid(rows);
+    for (const string row : rows)
+        cout << row << endl;
     system("pause");
     return 0;
 }
