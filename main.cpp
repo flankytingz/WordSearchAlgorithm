@@ -192,6 +192,7 @@ int main() {
 
     if (wordList.is_open())
     {
+
         // Iterating for each word
         while (!wordList.eof())
         {

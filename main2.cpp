@@ -13,32 +13,14 @@ const int COLUMNS = 5;
 static string rows[ROWS];
 void getGrid(string rows[ROWS])
 {
-    int i = 0, j = 0, input;
+    int i = 0, j = 0;
     char letter;
 
     while (i != ROWS)
     {
         while (j != COLUMNS)
         {
-            input = getch();
-            letter = (char) tolower((char) input);
-
-            if (input == 8)
-            {
-                if (j != 0 and j != (COLUMNS - 1))
-                {
-                    cout << "\b\b" << "\033[K";
-                    continue;
-                } else
-                if (j == 0)
-                {
-                    if (i != 0)
-                    {
-                        cout << "\033[u" << "\b\b" << "\033[K";
-                        continue;
-                    }
-                }
-            }
+            letter = (char) tolower(getch());
 
             switch (letter) {
                 case 'a':
@@ -76,6 +58,29 @@ void getGrid(string rows[ROWS])
                     break;
 
                 default:
+                    if (letter == '\b')
+                    {
+
+                        if (i == 0 and j != 0 and j != (COLUMNS - 1))
+                        {
+                            cout << "\b\b" << "\033[K";
+                            j--;
+                            continue;
+                        }
+                        else if (i != 0 and j == 0)
+                        {
+                            cout << "\033[u" << "\b" << "\033[K";
+                            i--;
+                            j = COLUMNS - 1;
+                            continue;
+                        }
+                        else
+                        {
+                            cout << "\b\b" << "\033[K";
+                            j--;
+                            continue;
+                        }
+                    }
                     break;
             }
 
