@@ -33,9 +33,6 @@ void printWord(const string& word, const int where)
         case 4:
             cout << word << " found diagonally";
             break;
-        case 5:
-            cout << word << " found reverse diagonally";
-            break;
         default:
             break;
     }
@@ -309,7 +306,7 @@ int main()
 
                     if (pos != string::npos)
                     {
-                        printWord(word,5);
+                        printWord(word,4);
                         j = (int) pos + (int) word.length() - 1;
                     }
                 }
@@ -330,7 +327,7 @@ int main()
 
                     if (pos != string::npos)
                     {
-                        printWord(word,5);
+                        printWord(word,4);
                         j = (int) pos + (int) word.length() - 1;
                     }
                 }
