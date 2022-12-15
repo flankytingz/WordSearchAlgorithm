@@ -2,81 +2,55 @@
 #include <string>
 #include <conio.h>
 #include <fstream>
+#include <sstream>
+
 /*
- * References
- * https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
- * https://en.cppreference.com/w/cpp/20
+ * Input code for backspace is 8
  * */
 
-const auto ROWS = 5;
-const auto COLUMNS = 5;
+using namespace std;
 
-// Getting the rows
-void getRows(std::string rows[ROWS])
+void printLine()
 {
-    std::cout << "Enter the rows of text: " << std::endl;
-
-    // Iterating over rows
-    for (int i = 0; i < ROWS; i++)
+    cout << "\t\t------------" << endl << flush;
+}
+void printWord(const string& word, const int where)
+{
+    switch (where)
     {
-        bool lastKeyIsBackspace = false;
-        // Iterating over the columns
-        for (int j = 0; j < COLUMNS; j++)
+        case 0:
+            cout << word << " found horizontally";
+            break;
+        case 1:
+            cout << word << " found reverse horizontally";
+            break;
+        case 2:
+            cout << word << " found vertically";
+            break;
+        case 3:
+            cout << word << " found reverse vertically";
+            break;
+        case 4:
+            cout << word << " found diagonally";
+            break;
+        default:
+            break;
+    }
+    cout << endl;
+}
+
+void getGrid(string rows[], const int ROWS, const int COLUMNS)
+{
+    int i = 0, j = 0;
+    char letter;
+
+    while (i != ROWS)
+    {
+        while (j != COLUMNS)
         {
+            letter = (char) tolower(getch());
 
-            // Prints the spacing automatically so all user has to do is enter the words
-
-            int input = getch();
-
-            // Handling backspace for new line
-            if (input == 8 and j == 0 and i > 0)
-            {
-                // Moving to saved cursor position, moving cursor back twice, then clearing the line
-                std::cout << "\033[u" << "\b\b" << "\033[K" << std::flush;
-
-                // moving row back
-                i--;
-                // moving to last word and -1 to cancel out addition
-                j = COLUMNS - 2;
-
-                continue;
-            }
-
-            // Handling backspace after backspace
-            if (lastKeyIsBackspace and input == 8 and j > 0)
-            {
-                // Moving cursor back twice then clearing the line
-                std::cout << "\b\b" << "\033[K" << std::flush;
-
-                // Decreases J by 2 because we need to go back two iterations, one for backspace, one for previous letter
-                j -= 2;
-
-                lastKeyIsBackspace = true;
-
-                rows[i].replace(rows[i].length()-1,1,"");
-                continue;
-            }
-
-            // Handling backspace
-            if (input == 8 and j > 0)
-            {
-                // Moving cursor back twice then clearing the line
-                std::cout << "\b\b" << "\033[K" << std::flush;
-
-                // Decreases J by 2 because we need to go back two iterations, one for backspace, one for previous letter
-                j -= 2;
-
-                lastKeyIsBackspace = true;
-
-                rows[i].replace(rows[i].length()-1,1,"");
-                continue;
-            }
-
-            char letter = (char) tolower(input);
-
-            // Skips non-alphabetical entries
-            switch (letter)
-            {
+            switch (letter) {
                 case 'a':
                 case 'b':
                 case 'c':
@@ -103,151 +77,264 @@ void getRows(std::string rows[ROWS])
                 case 'x':
                 case 'y':
                 case 'z':
-                    std::cout << (char) toupper(letter) << " " << std::flush;
+                    if (j == COLUMNS - 1)
+                        cout << (char) toupper(letter);
+                    else
+                        cout << (char) toupper(letter) << " ";
+
                     rows[i] += letter;
 
-                    lastKeyIsBackspace = false;
-
+                    j++;
                     break;
 
                 default:
-                    // Ignores this input
+                    if (letter == '\b')
+                    {
 
-                    lastKeyIsBackspace = false;
-
-                    j--;
+                        if (i != 0 and j == 0)
+                        {
+                            cout << "\033[u" << "\b" << "\033[K";
+                            i--;
+                            j = COLUMNS - 1;
+                            rows[i].replace(j, 1, "");
+                            continue;
+                        }
+                        else
+                        {
+                            cout << "\b\b" << "\033[K";
+                            j--;
+                            rows[i].replace(j, 1, "");
+                            continue;
+                        }
+                    }
                     break;
             }
 
+            cout << flush; // NOLINT(readability-misleading-indentation)
         }
-        std::cout << "\033[s" << std::endl << std::flush;
+
+        cout << "\033[s" << endl;
+
+        j = 0;
+        i++;
     }
+
 }
 
-void printGrid(std::string rows[], const int mode)
+int main()
 {
-    switch (mode)
+    int ROWS;
+    int COLUMNS;
+    int DIAGONALS;
+    stringstream ss;
+
+    printLine();
+
+    while (true)
     {
-        case 0:
-            for (int i = 0; i < ROWS; i++)
-            {
-                std::string temp = rows[i];
-
-                for (char j : temp)
-                    std::cout << (char) toupper(j) << " ";
-
-                std::cout << std::endl;
-            }
-            break;
-        case 1:
-            for (int i = 0; i < ROWS; i++)
-                std::cout << rows[i] << std::endl;
-            break;
-        default:
-            break;
-    }
-}
-
-void printCoords(const std::string& word, const int x, const int y, const int mode)
-{
-
-    switch (mode)
-    {
-        case 0:
-            std::cout << word << " from (" << x << ", " << y << ") till (" << x + (int) word.length() - 1 << ", " << y << ")" << std::endl;
-            break;
-        case 1:
-            std::cout << word << " from (" << x << ", " << y << ") till (" << x << ", " << y + (int) word.length() - 1 << ")" << std::endl;
-            break;
-        default:
-            break;
-    }
-}
-
-int main() {
-    std::string rows[ROWS];
-    std::string columns[COLUMNS];
-    std::cout << "Hello, World!" << std::endl;
-
-    getRows(rows);
-
-    // filling column arrays
-    for (int i = 0; i < COLUMNS; i++)
-    {
-        std::string temp;
-
-        for (int j = 0; j < ROWS; j++)
+        string temp;
+        cout << "Enter grid size (format: 5x2):" << endl;
+        getline(cin, temp);
+        if (temp.length() >= 3 and temp.find('x') != string::npos)
         {
-            temp += rows[j].substr(i, 1);
+            ROWS = stoi(temp.substr(temp.find('x') + 1));
+            COLUMNS = stoi(temp.substr(0,temp.find('x')));
+            DIAGONALS = ROWS + COLUMNS - 3;
+            break;
         }
-
-        columns[i] = temp;
     }
 
-    std::ifstream wordList;
+    string rows[ROWS];
 
+    printLine();
+    cout << "Enter grid of size " << ROWS << "x" << COLUMNS << ":" << endl;
+
+    getGrid(rows, ROWS, COLUMNS);
+
+    printLine();
+    cout << "This is the grid you have input:" << endl;
+
+    cout << "    ";
+    for (int i = 0; i < COLUMNS; i++)
+        cout << i << "   ";
+    cout << endl;
+
+    for (int i = 0; i < ROWS; i++)
+    {
+        cout << i << "   ";
+        for (int j = 0; j < COLUMNS; j++)
+            cout << rows[i].substr(j,1) << "   ";
+        cout << endl;
+    }
+
+    string columns[COLUMNS];
+
+    for (int i = 0; i < COLUMNS; i++)
+        for (int j = 0; j < ROWS; j++)
+            columns[i] += rows[j].substr(i,1);
+
+    string diagonalsOne[DIAGONALS];
+
+    for (int i = 0; i < ROWS - 1; i++)
+    {
+        for (int j = (ROWS - 2) - i, k = 0; j < ROWS and k < COLUMNS; j++, k++)
+        {
+            diagonalsOne[i] += rows[j].substr(k, 1);
+        }
+    }
+    for (int i = ROWS - 1; i < DIAGONALS; i++)
+    {
+        for (int j = i - ROWS + 2, k = 0; j < COLUMNS and k < ROWS; j++, k++)
+        {
+            diagonalsOne[i] += columns[j].substr(k,1);
+        }
+    }
+
+    string diagonalsTwo[DIAGONALS];
+
+    for (int i = 0; i < COLUMNS - 1; i++)
+    {
+        for (int j = i + 1, k = 0; j >= 0 and k < ROWS; j--, k++)
+        {
+            diagonalsTwo[i] += columns[j].substr(k,1);
+        }
+    }
+    for (int i = COLUMNS - 1; i < DIAGONALS; i++)
+    {
+        for (int j = i - COLUMNS + 1, k = COLUMNS; j < ROWS and k >= 0; j++, k--)
+        {
+            diagonalsTwo[i] += rows[j].substr(k,1);
+        }
+    }
+
+    string rowsR[ROWS];
+    string columnsR[COLUMNS];
+    string diagonalsOneR[DIAGONALS];
+    string diagonalsTwoR[DIAGONALS];
+
+    for (int i = 0; i < ROWS; i++)
+        for (int j = (int) rows[i].length() - 1; j >= 0; j--)
+            rowsR[i] += rows[i].substr(j, 1);
+
+    for (int i = 0; i < COLUMNS; i++)
+        for (int j = (int) columns[i].length() - 1; j >= 0; j--)
+            columnsR[i] += columns[i].substr(j, 1);
+
+    for (int i = 0; i < DIAGONALS; i++)
+        for (int j = (int) diagonalsOne[i].length() - 1; j >= 0; j--)
+            diagonalsOneR[i] += diagonalsOne[i].substr(j, 1);
+
+    for (int i = 0; i < DIAGONALS; i++)
+        for (int j = (int) diagonalsTwo[i].length() - 1; j >= 0; j--)
+            diagonalsTwoR[i] += diagonalsTwo[i].substr(j, 1);
+
+
+    ifstream wordList;
     wordList.open(R"(C:\Users\Flanky\CLionProjects\CS101_A3\wordlist.txt)");
 
-    std::string word;
+    string word;
 
     if (wordList.is_open())
-    {
-
-        // Iterating for each word
         while (!wordList.eof())
         {
             wordList >> word;
 
-            // Iterating over rows
             for (int i = 0; i < ROWS; i++)
             {
-                // Finds all the occurrences of a word horizontally
                 for (int j = 0; j < rows[i].length(); j++)
                 {
-                    // Starts finding the word from the point in the string
                     unsigned long long int pos = rows[i].find(word, j);
 
-                    // Checks if string is found, if not found pos = npos.
-                    if (pos != std::string::npos)
+                    if (pos != string::npos)
                     {
-                        // Prints the co-ordinates
-                        printCoords(word,(int) pos + 1,i+1,0);
-                        // Moving search to after the word
+                        printWord(word,0);
+                        j = (int) pos + (int) word.length() - 1;
+                    }
+                }
+
+                for (int j = 0; j < rowsR[i].length(); j++)
+                {
+                    unsigned long long int pos = rowsR[i].find(word, j);
+
+                    if (pos != string::npos)
+                    {
+                        printWord(word,1);
                         j = (int) pos + (int) word.length() - 1;
                     }
                 }
             }
 
-            // Iterating over columns
             for (int i = 0; i < COLUMNS; i++)
             {
-
-                // Finding substrings
                 for (int j = 0; j < columns[i].length(); j++)
                 {
-                    // Starts finding the word from the point in the string
                     unsigned long long int pos = columns[i].find(word, j);
 
-                    // Checks if string is found, if not found pos = npos.
-                    if (pos != std::string::npos)
+                    if (pos != string::npos)
                     {
-                        // Prints the co-ordinates
-                        printCoords(word, i + 1, (int) pos + 1, 1);
+                        printWord(word,2);
+                        j = (int) pos + (int) word.length() - 1;
+                    }
+                }
+                for (int j = 0; j < columnsR[i].length(); j++)
+                {
+                    unsigned long long int pos = columnsR[i].find(word, j);
 
-                        // Moving search to after the word
+                    if (pos != string::npos)
+                    {
+                        printWord(word,3);
+                        j = (int) pos + (int) word.length() - 1;
+                    }
+                }
+            }
+
+            for (int i = 0; i < DIAGONALS; i++)
+            {
+                for (int j = 0; j < diagonalsOne[i].length(); j++)
+                {
+                    unsigned long long int pos = diagonalsOne[i].find(word, j);
+
+                    if (pos != string::npos)
+                    {
+                        printWord(word,4);
+                        j = (int) pos + (int) word.length() - 1;
+                    }
+                }
+                for (int j = 0; j < diagonalsOneR[i].length(); j++)
+                {
+                    unsigned long long int pos = diagonalsOneR[i].find(word, j);
+
+                    if (pos != string::npos)
+                    {
+                        printWord(word,4);
+                        j = (int) pos + (int) word.length() - 1;
+                    }
+                }
+
+                for (int j = 0; j < diagonalsTwo[i].length(); j++)
+                {
+                    unsigned long long int pos = diagonalsTwo[i].find(word, j);
+
+                    if (pos != string::npos)
+                    {
+                        printWord(word,4);
+                        j = (int) pos + (int) word.length() - 1;
+                    }
+                }
+                for (int j = 0; j < diagonalsTwoR[i].length(); j++)
+                {
+                    unsigned long long int pos = diagonalsTwoR[i].find(word, j);
+
+                    if (pos != string::npos)
+                    {
+                        printWord(word,4);
                         j = (int) pos + (int) word.length() - 1;
                     }
                 }
             }
         }
 
-        wordList.close();
-    }
-    else
-        std::cout << "Unable to open file" << std::endl;
-
-    // Pauses the terminal
-    getch();
-
+    printLine();
+    system("pause");
     return 0;
 }

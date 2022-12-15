@@ -41,103 +41,37 @@ include CMakeFiles/rules.ninja
 
 cmake_ninja_workdir = C$:/Users/Flanky/CLionProjects/CS101_A3/cmake-build-debug/
 # =============================================================================
-# Object build statements for EXECUTABLE target CS101_A3
+# Object build statements for EXECUTABLE target main
 
 
 #############################################
-# Order-only phony target for CS101_A3
+# Order-only phony target for main
 
-build cmake_object_order_depends_target_CS101_A3: phony || CMakeFiles/CS101_A3.dir
+build cmake_object_order_depends_target_main: phony || CMakeFiles/main.dir
 
-build CMakeFiles/CS101_A3.dir/main.cpp.obj: CXX_COMPILER__CS101_A3_Debug C$:/Users/Flanky/CLionProjects/CS101_A3/main.cpp || cmake_object_order_depends_target_CS101_A3
-  DEP_FILE = CMakeFiles\CS101_A3.dir\main.cpp.obj.d
+build CMakeFiles/main.dir/main.cpp.obj: CXX_COMPILER__main_Debug C$:/Users/Flanky/CLionProjects/CS101_A3/main.cpp || cmake_object_order_depends_target_main
+  DEP_FILE = CMakeFiles\main.dir\main.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always -std=gnu++20
-  OBJECT_DIR = CMakeFiles\CS101_A3.dir
-  OBJECT_FILE_DIR = CMakeFiles\CS101_A3.dir
+  OBJECT_DIR = CMakeFiles\main.dir
+  OBJECT_FILE_DIR = CMakeFiles\main.dir
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target CS101_A3
+# Link build statements for EXECUTABLE target main
 
 
 #############################################
-# Link the executable CS101_A3.exe
+# Link the executable main.exe
 
-build CS101_A3.exe: CXX_EXECUTABLE_LINKER__CS101_A3_Debug CMakeFiles/CS101_A3.dir/main.cpp.obj
+build main.exe: CXX_EXECUTABLE_LINKER__main_Debug CMakeFiles/main.dir/main.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  OBJECT_DIR = CMakeFiles\CS101_A3.dir
+  OBJECT_DIR = CMakeFiles\main.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
-  TARGET_FILE = CS101_A3.exe
-  TARGET_IMPLIB = libCS101_A3.dll.a
-  TARGET_PDB = CS101_A3.exe.dbg
-
-# =============================================================================
-# Object build statements for EXECUTABLE target temp
-
-
-#############################################
-# Order-only phony target for temp
-
-build cmake_object_order_depends_target_temp: phony || CMakeFiles/temp.dir
-
-build CMakeFiles/temp.dir/temp.cpp.obj: CXX_COMPILER__temp_Debug C$:/Users/Flanky/CLionProjects/CS101_A3/temp.cpp || cmake_object_order_depends_target_temp
-  DEP_FILE = CMakeFiles\temp.dir\temp.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always -std=gnu++20
-  OBJECT_DIR = CMakeFiles\temp.dir
-  OBJECT_FILE_DIR = CMakeFiles\temp.dir
-
-
-# =============================================================================
-# Link build statements for EXECUTABLE target temp
-
-
-#############################################
-# Link the executable temp.exe
-
-build temp.exe: CXX_EXECUTABLE_LINKER__temp_Debug CMakeFiles/temp.dir/temp.cpp.obj
-  FLAGS = -g
-  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  OBJECT_DIR = CMakeFiles\temp.dir
-  POST_BUILD = cd .
-  PRE_LINK = cd .
-  TARGET_FILE = temp.exe
-  TARGET_IMPLIB = libtemp.dll.a
-  TARGET_PDB = temp.exe.dbg
-
-# =============================================================================
-# Object build statements for EXECUTABLE target main2
-
-
-#############################################
-# Order-only phony target for main2
-
-build cmake_object_order_depends_target_main2: phony || CMakeFiles/main2.dir
-
-build CMakeFiles/main2.dir/main2.cpp.obj: CXX_COMPILER__main2_Debug C$:/Users/Flanky/CLionProjects/CS101_A3/main2.cpp || cmake_object_order_depends_target_main2
-  DEP_FILE = CMakeFiles\main2.dir\main2.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always -std=gnu++20
-  OBJECT_DIR = CMakeFiles\main2.dir
-  OBJECT_FILE_DIR = CMakeFiles\main2.dir
-
-
-# =============================================================================
-# Link build statements for EXECUTABLE target main2
-
-
-#############################################
-# Link the executable main2.exe
-
-build main2.exe: CXX_EXECUTABLE_LINKER__main2_Debug CMakeFiles/main2.dir/main2.cpp.obj
-  FLAGS = -g
-  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  OBJECT_DIR = CMakeFiles\main2.dir
-  POST_BUILD = cd .
-  PRE_LINK = cd .
-  TARGET_FILE = main2.exe
-  TARGET_IMPLIB = libmain2.dll.a
-  TARGET_PDB = main2.exe.dbg
+  TARGET_FILE = main.exe
+  TARGET_IMPLIB = libmain.dll.a
+  TARGET_PDB = main.exe.dbg
 
 
 #############################################
@@ -166,11 +100,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
-build CS101_A3: phony CS101_A3.exe
-
-build main2: phony main2.exe
-
-build temp: phony temp.exe
+build main: phony main.exe
 
 # =============================================================================
 # Folder targets.
@@ -180,7 +110,7 @@ build temp: phony temp.exe
 #############################################
 # Folder: C:/Users/Flanky/CLionProjects/CS101_A3/cmake-build-debug
 
-build all: phony CS101_A3.exe temp.exe main2.exe
+build all: phony main.exe
 
 # =============================================================================
 # Built-in targets
