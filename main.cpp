@@ -147,7 +147,7 @@ int main()
     string rows[ROWS];
 
     printLine();
-    cout << "Enter grid of size " << ROWS << "x" << COLUMNS << ":" << endl;
+    cout << "Enter grid of size " << COLUMNS << "x" << ROWS << ":" << endl;
 
     getGrid(rows, ROWS, COLUMNS);
 
