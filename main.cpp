@@ -10,6 +10,9 @@
 
 using namespace std;
 
+
+stringstream ss;
+
 void printLine()
 {
     cout << "\t\t------------" << endl << flush;
@@ -38,11 +41,29 @@ void printWord(const string& word, const int where)
     }
     cout << endl;
 }
+void getGridSize(int &ROWS, int &COLUMNS, int &DIAGONALS)
+{
+    while (true)
+    {
+        string temp;
+        cout << "Enter grid size (format: 5x2):" << endl;
+        getline(cin, temp);
+        if (temp.length() >= 3 and temp.find('x') != string::npos)
+        {
+            ROWS = stoi(temp.substr(temp.find('x') + 1));
+            COLUMNS = stoi(temp.substr(0,temp.find('x')));
+            DIAGONALS = ROWS + COLUMNS - 3;
+            break;
+        }
+    }
+}
 
-void getGrid(string rows[], const int ROWS, const int COLUMNS)
+void getGrid(string rows[], const int &ROWS, const int &COLUMNS)
 {
     int i = 0, j = 0;
     char letter;
+
+    cout << "Enter grid of size " << COLUMNS << "x" << ROWS << ":" << endl;
 
     while (i != ROWS)
     {
@@ -120,61 +141,14 @@ void getGrid(string rows[], const int ROWS, const int COLUMNS)
     }
 
 }
-
-int main()
+void buildColumnsArray(string rows[], string columns[], const int &ROWS, const int &COLUMNS)
 {
-    int ROWS;
-    int COLUMNS;
-    int DIAGONALS;
-    stringstream ss;
-
-    printLine();
-
-    while (true)
-    {
-        string temp;
-        cout << "Enter grid size (format: 5x2):" << endl;
-        getline(cin, temp);
-        if (temp.length() >= 3 and temp.find('x') != string::npos)
-        {
-            ROWS = stoi(temp.substr(temp.find('x') + 1));
-            COLUMNS = stoi(temp.substr(0,temp.find('x')));
-            DIAGONALS = ROWS + COLUMNS - 3;
-            break;
-        }
-    }
-
-    string rows[ROWS];
-
-    printLine();
-    cout << "Enter grid of size " << COLUMNS << "x" << ROWS << ":" << endl;
-
-    getGrid(rows, ROWS, COLUMNS);
-
-    printLine();
-    cout << "This is the grid you have input:" << endl;
-
-    cout << "    ";
-    for (int i = 0; i < COLUMNS; i++)
-        cout << i << "   ";
-    cout << endl;
-
-    for (int i = 0; i < ROWS; i++)
-    {
-        cout << i << "   ";
-        for (int j = 0; j < COLUMNS; j++)
-            cout << rows[i].substr(j,1) << "   ";
-        cout << endl;
-    }
-
-    string columns[COLUMNS];
-
     for (int i = 0; i < COLUMNS; i++)
         for (int j = 0; j < ROWS; j++)
             columns[i] += rows[j].substr(i,1);
-
-    string diagonalsOne[DIAGONALS];
-
+}
+void buildDiagonalsOneArray(string rows[], string columns[], string diagonalsOne[], const int &ROWS, const int &COLUMNS, const int &DIAGONALS)
+{
     for (int i = 0; i < ROWS - 1; i++)
     {
         for (int j = (ROWS - 2) - i, k = 0; j < ROWS and k < COLUMNS; j++, k++)
@@ -189,9 +163,9 @@ int main()
             diagonalsOne[i] += columns[j].substr(k,1);
         }
     }
-
-    string diagonalsTwo[DIAGONALS];
-
+}
+void buildDiagonalsTwoArray(string rows[], string columns[], string diagonalsTwo[], const int &ROWS, const int &COLUMNS, const int &DIAGONALS)
+{
     for (int i = 0; i < COLUMNS - 1; i++)
     {
         for (int j = i + 1, k = 0; j >= 0 and k < ROWS; j--, k++)
@@ -206,12 +180,9 @@ int main()
             diagonalsTwo[i] += rows[j].substr(k,1);
         }
     }
-
-    string rowsR[ROWS];
-    string columnsR[COLUMNS];
-    string diagonalsOneR[DIAGONALS];
-    string diagonalsTwoR[DIAGONALS];
-
+}
+void buildReverseArrays(string rows[], string columns[], string diagonalsOne[], string diagonalsTwo[], string rowsR[], string columnsR[], string diagonalsOneR[], string diagonalsTwoR[], const int &ROWS, const int &COLUMNS, const int &DIAGONALS)
+{
     for (int i = 0; i < ROWS; i++)
         for (int j = (int) rows[i].length() - 1; j >= 0; j--)
             rowsR[i] += rows[i].substr(j, 1);
@@ -227,6 +198,31 @@ int main()
     for (int i = 0; i < DIAGONALS; i++)
         for (int j = (int) diagonalsTwo[i].length() - 1; j >= 0; j--)
             diagonalsTwoR[i] += diagonalsTwo[i].substr(j, 1);
+}
+
+int main()
+{
+    int ROWS;
+    int COLUMNS;
+    int DIAGONALS;
+
+    getGridSize(ROWS, COLUMNS, DIAGONALS);
+
+    string rows[ROWS];
+    string columns[COLUMNS];
+    string diagonalsOne[DIAGONALS];
+    string diagonalsTwo[DIAGONALS];
+    string rowsR[ROWS];
+    string columnsR[COLUMNS];
+    string diagonalsOneR[DIAGONALS];
+    string diagonalsTwoR[DIAGONALS];
+
+    getGrid(rows, ROWS, COLUMNS);
+
+    buildColumnsArray(rows, columns, ROWS, COLUMNS);
+    buildDiagonalsOneArray(rows, columns, diagonalsOne, ROWS, COLUMNS, DIAGONALS);
+    buildDiagonalsTwoArray(rows, columns, diagonalsTwo, ROWS, COLUMNS, DIAGONALS);
+    buildReverseArrays(rows, columns, diagonalsOne, diagonalsTwo, rowsR, columnsR, diagonalsOneR, diagonalsTwoR, ROWS, COLUMNS, DIAGONALS);
 
 
     ifstream wordList;
