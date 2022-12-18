@@ -22,14 +22,14 @@ void getGrid();
 
 void printGrid();
 
-void buildColumns();
 void buildRows();
+void buildColumns();
+void buildDiagonals();
 
 void checkRows(const string& word, stringstream& ss);
 void checkColumns(const string& word, stringstream& ss);
 void checkDiagonals(const string& word, stringstream& ss);
 
-void buildDiagonals();
 
 int main()
 {
