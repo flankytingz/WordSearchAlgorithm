@@ -71,6 +71,11 @@ void checkDiagonals(const string& word, stringstream& ss)
 {
     for (int i = 0; i < DIAGONALS; i++)
     {
+        if (word.length() > diagonals[i].length())
+        {
+            return;
+        }
+
         if (diagonals[i].find(word) != string::npos)
         {
             int pos = (int) diagonals[i].find(word);
@@ -161,7 +166,13 @@ void checkDiagonals(const string& word, stringstream& ss)
     }
 }
 
-void checkColumns(const string& word, stringstream& ss) {
+void checkColumns(const string& word, stringstream& ss)
+{
+    if (word.length() > ROWS)
+    {
+        return;
+    }
+
     for (int i = 0; i < COLUMNS; i++)
     {
         if (columns[i].find(word) != string::npos)
@@ -185,7 +196,13 @@ void checkColumns(const string& word, stringstream& ss) {
     }
 }
 
-void checkRows(const string& word, stringstream& ss) {
+void checkRows(const string& word, stringstream& ss)
+{
+    if (word.length() > COLUMNS)
+    {
+        return;
+    }
+
     for (int i = 0; i < ROWS; i++)
     {
         if (rows[i].find(word) != string::npos)
