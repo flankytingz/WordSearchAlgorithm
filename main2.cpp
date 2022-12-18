@@ -4,6 +4,7 @@
 #include <sstream>
 #include <cmath>
 #include <chrono>
+#include <regex>
 
 using namespace std;
 
@@ -318,8 +319,16 @@ void getGrid() {
     {
         for (char & j : i)
         {
-            j = (char) getch();
-            cout << j << " ";
+            while (true)
+            {
+                char temp = (char) tolower(getch());
+                if (regex_match(string{temp},regex("[a-z||A-Z]")))
+                {
+                    j = temp;
+                    cout << (char) toupper(temp) << " ";
+                    break;
+                }
+            }
         }
 
         cout << endl;
