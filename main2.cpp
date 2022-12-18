@@ -3,11 +3,12 @@
 #include <fstream>
 #include <sstream>
 #include <cmath>
+#include <chrono>
 
 using namespace std;
 
-const int ROWS = 5;
-const int COLUMNS = 5;
+const int ROWS = 10;
+const int COLUMNS = 10;
 const int DIAGONALS = 2*(ROWS + COLUMNS - 3);
 char grid[ROWS][COLUMNS];
 string rows[ROWS];
@@ -33,6 +34,9 @@ void buildDiagonals();
 int main()
 {
     getGrid();
+
+    const auto start = chrono::system_clock::now();
+
     printGrid();
     buildRows();
     buildColumns();
@@ -61,6 +65,11 @@ int main()
             cout << ss.str();
         }
     }
+
+    const auto end = chrono::system_clock::now();
+    const auto diff = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+    cout << "Total time taken: " << diff << endl;
 
     cout << "ENTER BACKSPACE TO EXIT" << endl;
     while ((char) getch() != '\b');
