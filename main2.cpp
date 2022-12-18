@@ -62,11 +62,21 @@ void checkRows(const string& word, stringstream& ss) {
     {
         if (rows[i].find(word) != string::npos)
         {
-            ss << "Found in row " << i + 1 << endl;
+            ss
+            << "Found in row " << i + 1 << " "
+            << "(" << i + 1 << ", " << rows[i].find(word) + 1 << ")"
+            << " -> "
+            << "(" << i + 1 << ", " << rows[i].find(word) + word.length() << ")"
+            << endl;
         }
         if (rowsR[i].find(word) != string::npos)
         {
-            ss << "Found reversed in row " << i + 1 << endl;
+            ss
+            << "Found reversed in row " << i + 1 << " "
+            << "(" << i + 1 << ", " << COLUMNS - (rowsR[i].find(word)) << ")"
+            << " -> "
+            << "(" << i + 1 << ", " << COLUMNS - (rowsR[i].find(word) + word.length() - 1) << ")"
+            << endl;
         }
     }
 }
@@ -89,8 +99,7 @@ void buildRows() {
     }
 }
 
-template <size_t size_x, size_t size_y>
-void printGrid(string grid[size_x][size_y]) {
+void printGrid() {
     for (auto & i : grid)
     {
         for (char j : i)
