@@ -19,8 +19,8 @@ string diagonals[DIAGONALS];
 string diagonalsR[DIAGONALS];
 
 void getGrid();
-
-void printGrid();
+[[maybe_unused]] void printGrid();
+inline void printLine();
 
 void buildRows();
 void buildColumns();
@@ -30,9 +30,9 @@ void checkRows(const string& word, stringstream& ss);
 void checkColumns(const string& word, stringstream& ss);
 void checkDiagonals(const string& word, stringstream& ss);
 
-
 int main()
 {
+    printLine();
     getGrid();
 
     const auto start = chrono::system_clock::now();
@@ -48,6 +48,9 @@ int main()
         return 0;
     }
 
+    printLine();
+    cout << "CHECKING FOR WORDS NOW" << endl;
+
     while (!wordList.eof())
     {
         string word;
@@ -60,6 +63,7 @@ int main()
 
         if (ss.str().length() > 0)
         {
+            printLine();
             cout << word << ":" << endl;
             cout << ss.str();
         }
@@ -68,172 +72,76 @@ int main()
     const auto end = chrono::system_clock::now();
     const auto diff = chrono::duration_cast<chrono::milliseconds>(end - start);
 
+    printLine();
     cout << "Total time taken: " << diff << endl;
 
+    printLine();
     cout << "ENTER BACKSPACE TO EXIT" << endl;
     while ((char) getch() != '\b');
     return 0;
 }
 
-void checkDiagonals(const string& word, stringstream& ss)
-{
-    for (int i = 0; i < DIAGONALS; i++)
+void getGrid() {
+    cout << "Please enter your grid of size " << ROWS << "-" << COLUMNS << ":" << endl;
+    for (auto & i : grid)
     {
-        if (word.length() > diagonals[i].length())
+        for (char & j : i)
         {
-            return;
-        }
-
-        if (diagonals[i].find(word) != string::npos)
-        {
-            int pos = (int) diagonals[i].find(word);
-            int length = (int) word.length() - 1;
-            if (i < floor(DIAGONALS/4))
+            while (true)
             {
-                int temp = (int) floor(DIAGONALS/4) - i + 1;
-                ss
-                << "Found diagonally "
-                << "(" << temp << ", " << pos + 1 << ")"
-                << " - > "
-                << "(" << temp + length << ", " << pos + length + 1 << ")"
-                << endl;
-            }
-            else if (i < DIAGONALS/2)
-            {
-                int temp = i - (int) ceil(DIAGONALS/4);
-                ss
-                << "Found diagonally "
-                << "(" << pos + 1 << ", " << temp + 1 << ")"
-                << " -> "
-                << "(" << pos + length + 1 << ", " << temp + length + 1 << ")"
-                << endl;
-            }
-            else if (i < floor(3*DIAGONALS/4))
-            {
-                int temp = i - DIAGONALS/2 + 1;
-                ss
-                << "Found diagonally "
-                << "(" << pos + 1 << ", " << temp + 1 << ")"
-                << " -> "
-                << "(" << pos + length + 1 << ", " << temp - length + 1 << ")"
-                << endl;
-            }
-            else {
-                ss
-                << "Found diagonally "
-                << "(" << ROWS - pos << ", " << COLUMNS - (diagonals[i].length() - pos - 1) << ")"
-                << " -> "
-                << "(" << ROWS - (pos + length) << ", " << COLUMNS - (diagonals[i].length() - length - pos - 1) << ")"
-                << endl;
+                char temp = (char) tolower(getch());
+                if (regex_match(string{temp},regex("[a-z||A-Z]")))
+                {
+                    j = temp;
+                    cout << (char) toupper(temp) << " ";
+                    break;
+                }
             }
         }
 
-        if (diagonalsR[i].find(word) != string::npos)
-        {
-            int pos = (int) diagonalsR[i].find(word);
-            int length = (int) word.length() - 1;
-            if (i < floor(DIAGONALS/4))
-            {
-                int temp = (int) floor(DIAGONALS/4) - i + 1;
-                ss
-                << "Found diagonally "
-                << "(" << temp + length << ", " << pos + length + 1 << ")"
-                << " - > "
-                << "(" << temp << ", " << pos + 1 << ")"
-                << endl;
-            }
-            else if (i < DIAGONALS/2)
-            {
-                int temp = i - (int) ceil(DIAGONALS/4);
-                ss
-                        << "Found diagonally "
-                        << "(" << pos + length + 1 << ", " << temp + length + 1 << ")"
-                        << " -> "
-                        << "(" << pos + 1 << ", " << temp + 1 << ")"
-                        << endl;
-            }
-            else if (i < floor(3*DIAGONALS/4))
-            {
-                int temp = i - DIAGONALS/2 + 1;
-                ss
-                        << "Found diagonally "
-                        << "(" << pos + 1 << ", " << temp + 1 << ")"
-                        << " -> "
-                        << "(" << pos + length + 1 << ", " << temp - length + 1 << ")"
-                        << endl;
-            }
-            else {
-                ss
-                        << "Found diagonally "
-                        << "(" << COLUMNS - (diagonalsR[i].length() - pos - 1) << ", " << ROWS - pos << ")"
-                        << " -> "
-                        << "(" << COLUMNS - (diagonalsR[i].length() - length - pos - 1) << ", " << ROWS - (pos + length) << ")"
-                        << endl;
-            }
-        }
+        cout << endl;
     }
 }
-
-void checkColumns(const string& word, stringstream& ss)
-{
-    if (word.length() > ROWS)
+[[maybe_unused]] void printGrid() {
+    for (auto & i : grid)
     {
-        return;
-    }
-
-    for (int i = 0; i < COLUMNS; i++)
-    {
-        if (columns[i].find(word) != string::npos)
-        {
-            ss
-            << "Found in column "
-            << "(" << columns[i].find(word) + 1 << ", " << i + 1 << ")"
-            << " -> "
-            << "(" << columns[i].find(word) + word.length() << ", " << i + 1 << ")"
-            << endl;
-        }
-        if (columnsR[i].find(word) != string::npos)
-        {
-            ss
-            << "Found reversed in column "
-            << "(" << ROWS - (columns[i].find(word) + 1) << ", " << i + 1 << ")"
-            << " -> "
-            << "(" << ROWS - (columns[i].find(word) + word.length()) << ", " << i + 1 << ")"
-            << endl;
-        }
+        for (char j : i)
+            cout << j;
+        cout << endl;
     }
 }
-
-void checkRows(const string& word, stringstream& ss)
+inline void printLine()
 {
-    if (word.length() > COLUMNS)
-    {
-        return;
-    }
+    cout << "\t\t------------" << endl;
+}
 
+void buildRows() {
     for (int i = 0; i < ROWS; i++)
     {
-        if (rows[i].find(word) != string::npos)
+        for (int j = 0; j < COLUMNS; j++)
         {
-            ss
-            << "Found in row "
-            << "(" << i + 1 << ", " << rows[i].find(word) + 1 << ")"
-            << " -> "
-            << "(" << i + 1 << ", " << rows[i].find(word) + word.length() << ")"
-            << endl;
+            rows[i] += grid[i][j];
         }
-        if (rowsR[i].find(word) != string::npos)
+        for (int j = COLUMNS - 1; j >= 0; j--)
         {
-            ss
-            << "Found reversed in row "
-            << "(" << i + 1 << ", " << COLUMNS - (rowsR[i].find(word)) << ")"
-            << " -> "
-            << "(" << i + 1 << ", " << COLUMNS - (rowsR[i].find(word) + word.length() - 1) << ")"
-            << endl;
+            rowsR[i] += grid[i][j];
         }
     }
 }
-
+void buildColumns()
+{
+    for (int i = 0; i < COLUMNS; i++)
+    {
+        for (int j = 0; j < ROWS; j++) // NOLINT(modernize-loop-convert)
+        {
+            columns[i] += grid[j][i];
+        }
+        for (int j = ROWS - 1; j >= 0; j--)
+        {
+            columnsR[i] += grid[j][i];
+        }
+    }
+}
 void buildDiagonals() {
     for (int i = 0; i < floor(DIAGONALS/4); i++)
     {
@@ -273,62 +181,159 @@ void buildDiagonals() {
     }
 }
 
-void buildColumns()
+void checkRows(const string& word, stringstream& ss)
 {
-    for (int i = 0; i < COLUMNS; i++)
+    if (word.length() > COLUMNS)
     {
-        for (int j = 0; j < ROWS; j++) // NOLINT(modernize-loop-convert)
-        {
-            columns[i] += grid[j][i];
-        }
-        for (int j = ROWS - 1; j >= 0; j--)
-        {
-            columnsR[i] += grid[j][i];
-        }
+        return;
     }
-}
 
-void buildRows() {
     for (int i = 0; i < ROWS; i++)
     {
-        for (int j = 0; j < COLUMNS; j++)
+        if (rows[i].find(word) != string::npos)
         {
-            rows[i] += grid[i][j];
+            ss
+            << "Found in row "
+            << "(" << i + 1 << ", " << rows[i].find(word) + 1 << ")"
+            << " -> "
+            << "(" << i + 1 << ", " << rows[i].find(word) + word.length() << ")"
+            << endl;
         }
-        for (int j = COLUMNS - 1; j >= 0; j--)
+        if (rowsR[i].find(word) != string::npos)
         {
-            rowsR[i] += grid[i][j];
+            ss
+            << "Found reversed in row "
+            << "(" << i + 1 << ", " << COLUMNS - (rowsR[i].find(word)) << ")"
+            << " -> "
+            << "(" << i + 1 << ", " << COLUMNS - (rowsR[i].find(word) + word.length() - 1) << ")"
+            << endl;
         }
     }
 }
-
-void printGrid() {
-    for (auto & i : grid)
+void checkColumns(const string& word, stringstream& ss)
+{
+    if (word.length() > ROWS)
     {
-        for (char j : i)
-            cout << j;
-        cout << endl;
+        return;
+    }
+
+    for (int i = 0; i < COLUMNS; i++)
+    {
+        if (columns[i].find(word) != string::npos)
+        {
+            ss
+                    << "Found in column "
+                    << "(" << columns[i].find(word) + 1 << ", " << i + 1 << ")"
+                    << " -> "
+                    << "(" << columns[i].find(word) + word.length() << ", " << i + 1 << ")"
+                    << endl;
+        }
+        if (columnsR[i].find(word) != string::npos)
+        {
+            ss
+                    << "Found reversed in column "
+                    << "(" << ROWS - (columns[i].find(word) + 1) << ", " << i + 1 << ")"
+                    << " -> "
+                    << "(" << ROWS - (columns[i].find(word) + word.length()) << ", " << i + 1 << ")"
+                    << endl;
+        }
     }
 }
-
-void getGrid() {
-    cout << "Please enter your grid of size " << ROWS << "-" << COLUMNS << ":" << endl;
-    for (auto & i : grid)
+void checkDiagonals(const string& word, stringstream& ss)
+{
+    for (int i = 0; i < DIAGONALS; i++)
     {
-        for (char & j : i)
+        if (word.length() > diagonals[i].length())
         {
-            while (true)
+            return;
+        }
+
+        if (diagonals[i].find(word) != string::npos)
+        {
+            int pos = (int) diagonals[i].find(word);
+            int length = (int) word.length() - 1;
+            if (i < floor(DIAGONALS/4))
             {
-                char temp = (char) tolower(getch());
-                if (regex_match(string{temp},regex("[a-z||A-Z]")))
-                {
-                    j = temp;
-                    cout << (char) toupper(temp) << " ";
-                    break;
-                }
+                int temp = (int) floor(DIAGONALS/4) - i + 1;
+                ss
+                        << "Found diagonally "
+                        << "(" << temp << ", " << pos + 1 << ")"
+                        << " - > "
+                        << "(" << temp + length << ", " << pos + length + 1 << ")"
+                        << endl;
+            }
+            else if (i < DIAGONALS/2)
+            {
+                int temp = i - (int) ceil(DIAGONALS/4);
+                ss
+                        << "Found diagonally "
+                        << "(" << pos + 1 << ", " << temp + 1 << ")"
+                        << " -> "
+                        << "(" << pos + length + 1 << ", " << temp + length + 1 << ")"
+                        << endl;
+            }
+            else if (i < floor(3*DIAGONALS/4))
+            {
+                int temp = i - DIAGONALS/2 + 1;
+                ss
+                        << "Found diagonally "
+                        << "(" << pos + 1 << ", " << temp + 1 << ")"
+                        << " -> "
+                        << "(" << pos + length + 1 << ", " << temp - length + 1 << ")"
+                        << endl;
+            }
+            else {
+                ss
+                        << "Found diagonally "
+                        << "(" << ROWS - pos << ", " << COLUMNS - (diagonals[i].length() - pos - 1) << ")"
+                        << " -> "
+                        << "(" << ROWS - (pos + length) << ", " << COLUMNS - (diagonals[i].length() - length - pos - 1) << ")"
+                        << endl;
             }
         }
 
-        cout << endl;
+        if (diagonalsR[i].find(word) != string::npos)
+        {
+            int pos = (int) diagonalsR[i].find(word);
+            int length = (int) word.length() - 1;
+            if (i < floor(DIAGONALS/4))
+            {
+                int temp = (int) floor(DIAGONALS/4) - i + 1;
+                ss
+                        << "Found diagonally "
+                        << "(" << temp + length << ", " << pos + length + 1 << ")"
+                        << " - > "
+                        << "(" << temp << ", " << pos + 1 << ")"
+                        << endl;
+            }
+            else if (i < DIAGONALS/2)
+            {
+                int temp = i - (int) ceil(DIAGONALS/4);
+                ss
+                        << "Found diagonally "
+                        << "(" << pos + length + 1 << ", " << temp + length + 1 << ")"
+                        << " -> "
+                        << "(" << pos + 1 << ", " << temp + 1 << ")"
+                        << endl;
+            }
+            else if (i < floor(3*DIAGONALS/4))
+            {
+                int temp = i - DIAGONALS/2 + 1;
+                ss
+                        << "Found diagonally "
+                        << "(" << pos + 1 << ", " << temp + 1 << ")"
+                        << " -> "
+                        << "(" << pos + length + 1 << ", " << temp - length + 1 << ")"
+                        << endl;
+            }
+            else {
+                ss
+                        << "Found diagonally "
+                        << "(" << COLUMNS - (diagonalsR[i].length() - pos - 1) << ", " << ROWS - pos << ")"
+                        << " -> "
+                        << "(" << COLUMNS - (diagonalsR[i].length() - length - pos - 1) << ", " << ROWS - (pos + length) << ")"
+                        << endl;
+            }
+        }
     }
 }
