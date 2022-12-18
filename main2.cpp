@@ -1,7 +1,6 @@
 #include <iostream>
 #include <conio.h>
 #include <fstream>
-#include <sstream>
 #include <cmath>
 #include <chrono>
 #include <regex>
@@ -38,7 +37,6 @@ int main()
 
     const auto start = chrono::system_clock::now();
 
-    printGrid();
     buildRows();
     buildColumns();
     buildDiagonals();
