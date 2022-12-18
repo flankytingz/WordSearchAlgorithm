@@ -2,16 +2,20 @@
 #include <conio.h>
 #include <fstream>
 #include <sstream>
+#include <cmath>
 
 using namespace std;
 
 const int ROWS = 5;
 const int COLUMNS = 5;
+const int DIAGONALS = 2*(ROWS + COLUMNS - 3);
 char grid[ROWS][COLUMNS];
 string rows[ROWS];
 string rowsR[ROWS];
 string columns[COLUMNS];
 string columnsR[COLUMNS];
+string diagonals[DIAGONALS];
+string diagonalsR[DIAGONALS];
 
 void getGrid();
 
@@ -22,6 +26,9 @@ void buildRows();
 
 void checkRows(const string& word, stringstream& ss);
 void checkColumns(const string& word, stringstream& ss);
+void checkDiagonals(const string& word, stringstream& ss);
+
+void buildDiagonals();
 
 int main()
 {
@@ -29,6 +36,7 @@ int main()
     printGrid();
     buildRows();
     buildColumns();
+    buildDiagonals();
 
     ifstream wordList = ifstream(R"(C:\Users\Flanky\CLionProjects\CS101_A3\wordlist.txt)");
     if (!wordList.is_open())
@@ -43,13 +51,9 @@ int main()
         stringstream ss;
         wordList >> word;
 
-        if (word.length() > COLUMNS)
-        {
-            continue;
-        }
-
         checkRows(word, ss);
         checkColumns(word, ss);
+        checkDiagonals(word, ss);
 
         if (ss.str().length() > 0)
         {
@@ -63,13 +67,107 @@ int main()
     return 0;
 }
 
+void checkDiagonals(const string& word, stringstream& ss)
+{
+    for (int i = 0; i < DIAGONALS; i++)
+    {
+        if (diagonals[i].find(word) != string::npos)
+        {
+            int pos = (int) diagonals[i].find(word);
+            int length = (int) word.length() - 1;
+            if (i < floor(DIAGONALS/4))
+            {
+                int temp = (int) floor(DIAGONALS/4) - i + 1;
+                ss
+                << "Found diagonally "
+                << "(" << temp << ", " << pos + 1 << ")"
+                << " - > "
+                << "(" << temp + length << ", " << pos + length + 1 << ")"
+                << endl;
+            }
+            else if (i < DIAGONALS/2)
+            {
+                int temp = i - (int) ceil(DIAGONALS/4);
+                ss
+                << "Found diagonally "
+                << "(" << pos + 1 << ", " << temp + 1 << ")"
+                << " -> "
+                << "(" << pos + length + 1 << ", " << temp + length + 1 << ")"
+                << endl;
+            }
+            else if (i < floor(3*DIAGONALS/4))
+            {
+                int temp = i - DIAGONALS/2 + 1;
+                ss
+                << "Found diagonally "
+                << "(" << pos + 1 << ", " << temp + 1 << ")"
+                << " -> "
+                << "(" << pos + length + 1 << ", " << temp - length + 1 << ")"
+                << endl;
+            }
+            else {
+                ss
+                << "Found diagonally "
+                << "(" << ROWS - pos << ", " << COLUMNS - (diagonals[i].length() - pos - 1) << ")"
+                << " -> "
+                << "(" << ROWS - (pos + length) << ", " << COLUMNS - (diagonals[i].length() - length - pos - 1) << ")"
+                << endl;
+            }
+        }
+
+        if (diagonalsR[i].find(word) != string::npos)
+        {
+            int pos = (int) diagonalsR[i].find(word);
+            int length = (int) word.length() - 1;
+            if (i < floor(DIAGONALS/4))
+            {
+                int temp = (int) floor(DIAGONALS/4) - i + 1;
+                ss
+                << "Found diagonally "
+                << "(" << temp + length << ", " << pos + length + 1 << ")"
+                << " - > "
+                << "(" << temp << ", " << pos + 1 << ")"
+                << endl;
+            }
+            else if (i < DIAGONALS/2)
+            {
+                int temp = i - (int) ceil(DIAGONALS/4);
+                ss
+                        << "Found diagonally "
+                        << "(" << pos + length + 1 << ", " << temp + length + 1 << ")"
+                        << " -> "
+                        << "(" << pos + 1 << ", " << temp + 1 << ")"
+                        << endl;
+            }
+            else if (i < floor(3*DIAGONALS/4))
+            {
+                int temp = i - DIAGONALS/2 + 1;
+                ss
+                        << "Found diagonally "
+                        << "(" << pos + 1 << ", " << temp + 1 << ")"
+                        << " -> "
+                        << "(" << pos + length + 1 << ", " << temp - length + 1 << ")"
+                        << endl;
+            }
+            else {
+                ss
+                        << "Found diagonally "
+                        << "(" << COLUMNS - (diagonalsR[i].length() - pos - 1) << ", " << ROWS - pos << ")"
+                        << " -> "
+                        << "(" << COLUMNS - (diagonalsR[i].length() - length - pos - 1) << ", " << ROWS - (pos + length) << ")"
+                        << endl;
+            }
+        }
+    }
+}
+
 void checkColumns(const string& word, stringstream& ss) {
     for (int i = 0; i < COLUMNS; i++)
     {
         if (columns[i].find(word) != string::npos)
         {
             ss
-            << "Found in column " << i + 1 << " "
+            << "Found in column "
             << "(" << columns[i].find(word) + 1 << ", " << i + 1 << ")"
             << " -> "
             << "(" << columns[i].find(word) + word.length() << ", " << i + 1 << ")"
@@ -78,7 +176,7 @@ void checkColumns(const string& word, stringstream& ss) {
         if (columnsR[i].find(word) != string::npos)
         {
             ss
-            << "Found reversed in column " << i + 1 << " "
+            << "Found reversed in column "
             << "(" << ROWS - (columns[i].find(word) + 1) << ", " << i + 1 << ")"
             << " -> "
             << "(" << ROWS - (columns[i].find(word) + word.length()) << ", " << i + 1 << ")"
@@ -93,7 +191,7 @@ void checkRows(const string& word, stringstream& ss) {
         if (rows[i].find(word) != string::npos)
         {
             ss
-            << "Found in row " << i + 1 << " "
+            << "Found in row "
             << "(" << i + 1 << ", " << rows[i].find(word) + 1 << ")"
             << " -> "
             << "(" << i + 1 << ", " << rows[i].find(word) + word.length() << ")"
@@ -102,11 +200,50 @@ void checkRows(const string& word, stringstream& ss) {
         if (rowsR[i].find(word) != string::npos)
         {
             ss
-            << "Found reversed in row " << i + 1 << " "
+            << "Found reversed in row "
             << "(" << i + 1 << ", " << COLUMNS - (rowsR[i].find(word)) << ")"
             << " -> "
             << "(" << i + 1 << ", " << COLUMNS - (rowsR[i].find(word) + word.length() - 1) << ")"
             << endl;
+        }
+    }
+}
+
+void buildDiagonals() {
+    for (int i = 0; i < floor(DIAGONALS/4); i++)
+    {
+        for (int j = ROWS - (i + 2), k = 0; j < ROWS and k < COLUMNS; j++, k++)
+        {
+            diagonals[i] += grid[j][k];
+        }
+    }
+    for (int i = ceil(DIAGONALS/4); i < DIAGONALS/2; i++)
+    {
+        for (int j = 0, k = i - (int) floor(DIAGONALS/4); j < ROWS and k < COLUMNS; j++, k++)
+        {
+            diagonals[i] += grid[j][k];
+        }
+    }
+    for (int i = DIAGONALS/2; i < ceil(3*DIAGONALS/4); i++)
+    {
+        for (int j = i - (DIAGONALS/2 - 1), k = 0; j >= 0 and k < COLUMNS; j--, k++)
+        {
+            diagonals[i] += grid[j][k];
+        }
+    }
+    for (int i = ceil(3*DIAGONALS/4); i < DIAGONALS; i++)
+    {
+        for (int j = ROWS - 1, k = i - (int) floor(3*DIAGONALS/4); j >= 0 and k < COLUMNS; j--, k++)
+        {
+            diagonals[i] += grid[j][k];
+        }
+    }
+
+    for (int i = 0; i < DIAGONALS; i++)
+    {
+        for (int j = (int) diagonals[i].length() - 1; j >= 0; j--)
+        {
+            diagonalsR[i] += diagonals[i].substr(j,1);
         }
     }
 }
