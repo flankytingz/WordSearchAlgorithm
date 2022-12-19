@@ -245,11 +245,6 @@ void checkDiagonals(const string& word, stringstream& ss)
 {
     for (int i = 0; i < DIAGONALS; i++)
     {
-        if (word.length() > diagonals[i].length() + 1)
-        {
-            return;
-        }
-
         if (diagonals[i].find(word) != string::npos)
         {
             int pos = (int) diagonals[i].find(word);

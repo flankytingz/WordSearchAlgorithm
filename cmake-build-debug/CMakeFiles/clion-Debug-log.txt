@@ -1,13 +1,4 @@
 C:\Users\Flanky\.msys64\mingw64\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/Users/Flanky/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/ninja/win/ninja.exe -G Ninja -S C:\Users\Flanky\CLionProjects\CS101_A3 -B C:\Users\Flanky\CLionProjects\CS101_A3\cmake-build-debug
 -- Configuring done
-CMake Error at CMakeLists.txt:6 (add_executable):
-  Cannot find source file:
-
-    main.cpp
-
-
-CMake Error at CMakeLists.txt:6 (add_executable):
-  No SOURCES given to target: main
-
-
-CMake Generate step failed.  Build files cannot be regenerated correctly.
+-- Generating done
+-- Build files have been written to: C:/Users/Flanky/CLionProjects/CS101_A3/cmake-build-debug

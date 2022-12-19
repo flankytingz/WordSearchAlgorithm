@@ -1,4 +1,4 @@
-C:/Users/Flanky/CLionProjects/CS101_A3/cmake-build-debug/CMakeFiles/main2.dir
+C:/Users/Flanky/CLionProjects/CS101_A3/cmake-build-debug/CMakeFiles/main.dir
 C:/Users/Flanky/CLionProjects/CS101_A3/cmake-build-debug/CMakeFiles/ubaid.dir
 C:/Users/Flanky/CLionProjects/CS101_A3/cmake-build-debug/CMakeFiles/mian.dir
 C:/Users/Flanky/CLionProjects/CS101_A3/cmake-build-debug/CMakeFiles/edit_cache.dir
