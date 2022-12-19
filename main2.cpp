@@ -7,8 +7,8 @@
 
 using namespace std;
 
-const int ROWS = 10;
-const int COLUMNS = 10;
+const int ROWS = 5;
+const int COLUMNS = 5;
 const int DIAGONALS = 2*(ROWS + COLUMNS - 3);
 char grid[ROWS][COLUMNS];
 string rows[ROWS];
@@ -41,10 +41,12 @@ int main()
     buildColumns();
     buildDiagonals();
 
-    ifstream wordList = ifstream(R"(C:\Users\Flanky\CLionProjects\CS101_A3\wordlist.txt)");
+    ifstream wordList = ifstream("wordlist.txt");
     if (!wordList.is_open())
     {
         cerr << "FAILED TO OPEN WORD LIST" << endl;
+        cout << "ENTER BACKSPACE TO EXIT" << endl;
+        while ((char) getch() != '\b');
         return 0;
     }
 
@@ -243,7 +245,7 @@ void checkDiagonals(const string& word, stringstream& ss)
 {
     for (int i = 0; i < DIAGONALS; i++)
     {
-        if (word.length() > diagonals[i].length())
+        if (word.length() > diagonals[i].length() + 1)
         {
             return;
         }

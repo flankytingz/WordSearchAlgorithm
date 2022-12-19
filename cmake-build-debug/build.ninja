@@ -106,6 +106,72 @@ build main2.exe: CXX_EXECUTABLE_LINKER__main2_Debug CMakeFiles/main2.dir/main2.c
   TARGET_IMPLIB = libmain2.dll.a
   TARGET_PDB = main2.exe.dbg
 
+# =============================================================================
+# Object build statements for EXECUTABLE target ubaid
+
+
+#############################################
+# Order-only phony target for ubaid
+
+build cmake_object_order_depends_target_ubaid: phony || CMakeFiles/ubaid.dir
+
+build CMakeFiles/ubaid.dir/ubaid.cpp.obj: CXX_COMPILER__ubaid_Debug C$:/Users/Flanky/CLionProjects/CS101_A3/ubaid.cpp || cmake_object_order_depends_target_ubaid
+  DEP_FILE = CMakeFiles\ubaid.dir\ubaid.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always -std=gnu++20
+  OBJECT_DIR = CMakeFiles\ubaid.dir
+  OBJECT_FILE_DIR = CMakeFiles\ubaid.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target ubaid
+
+
+#############################################
+# Link the executable ubaid.exe
+
+build ubaid.exe: CXX_EXECUTABLE_LINKER__ubaid_Debug CMakeFiles/ubaid.dir/ubaid.cpp.obj
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\ubaid.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = ubaid.exe
+  TARGET_IMPLIB = libubaid.dll.a
+  TARGET_PDB = ubaid.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target mian
+
+
+#############################################
+# Order-only phony target for mian
+
+build cmake_object_order_depends_target_mian: phony || CMakeFiles/mian.dir
+
+build CMakeFiles/mian.dir/mian.cpp.obj: CXX_COMPILER__mian_Debug C$:/Users/Flanky/CLionProjects/CS101_A3/mian.cpp || cmake_object_order_depends_target_mian
+  DEP_FILE = CMakeFiles\mian.dir\mian.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always -std=gnu++20
+  OBJECT_DIR = CMakeFiles\mian.dir
+  OBJECT_FILE_DIR = CMakeFiles\mian.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target mian
+
+
+#############################################
+# Link the executable mian.exe
+
+build mian.exe: CXX_EXECUTABLE_LINKER__mian_Debug CMakeFiles/mian.dir/mian.cpp.obj
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\mian.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = mian.exe
+  TARGET_IMPLIB = libmian.dll.a
+  TARGET_PDB = mian.exe.dbg
+
 
 #############################################
 # Utility command for edit_cache
@@ -137,6 +203,10 @@ build main: phony main.exe
 
 build main2: phony main2.exe
 
+build mian: phony mian.exe
+
+build ubaid: phony ubaid.exe
+
 # =============================================================================
 # Folder targets.
 
@@ -145,7 +215,7 @@ build main2: phony main2.exe
 #############################################
 # Folder: C:/Users/Flanky/CLionProjects/CS101_A3/cmake-build-debug
 
-build all: phony main.exe main2.exe
+build all: phony main.exe main2.exe ubaid.exe mian.exe
 
 # =============================================================================
 # Built-in targets
