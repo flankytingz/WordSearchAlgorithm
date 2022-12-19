@@ -1,4 +1,0 @@
-    // Processing the rows for words
-    {
-
-    }
